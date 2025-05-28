@@ -1,0 +1,452 @@
+R1:
+
+Building configuration...
+
+Current configuration : 867 bytes
+!
+version 12.3
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R1
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 172.30.1.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ ip address 172.30.2.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface Serial0/0/0
+ ip address 209.165.200.230 255.255.255.252
+!
+interface Serial0/0/1
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ passive-interface FastEthernet0/0
+ passive-interface FastEthernet0/1
+ network 172.30.0.0
+ network 209.165.200.0
+ no auto-summary
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+R1#show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/16 is subnetted, 1 subnets
+R       10.1.0.0 [120/1] via 209.165.200.229, 00:00:21, Serial0/0/0
+     172.30.0.0/16 is variably subnetted, 6 subnets, 2 masks
+C       172.30.1.0/24 is directly connected, FastEthernet0/0
+C       172.30.2.0/24 is directly connected, FastEthernet0/1
+R       172.30.100.0/24 [120/2] via 209.165.200.229, 00:00:21, Serial0/0/0
+R       172.30.110.0/24 [120/2] via 209.165.200.229, 00:00:21, Serial0/0/0
+R       172.30.200.16/28 [120/2] via 209.165.200.229, 00:00:21, Serial0/0/0
+R       172.30.200.32/28 [120/2] via 209.165.200.229, 00:00:21, Serial0/0/0
+     209.165.200.0/30 is subnetted, 2 subnets
+C       209.165.200.228 is directly connected, Serial0/0/0
+R       209.165.200.232 [120/1] via 209.165.200.229, 00:00:21, Serial0/0/0
+
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        172.30.1.1      YES manual up                    up 
+FastEthernet0/1        172.30.2.1      YES manual up                    up 
+Serial0/0/0            209.165.200.230 YES manual up                    up 
+Serial0/0/1            unassigned      YES NVRAM  administratively down down 
+Vlan1                  unassigned      YES NVRAM  administratively down down
+
+Routing Protocol is "rip"
+Sending updates every 30 seconds, next due in 20 seconds
+Invalid after 180 seconds, hold down 180, flushed after 240
+Outgoing update filter list for all interfaces is not set
+Incoming update filter list for all interfaces is not set
+Redistributing: rip
+Default version control: send version 2, receive 2
+  Interface             Send  Recv  Triggered RIP  Key-chain
+  Serial0/0/0           22
+Automatic network summarization is not in effect
+Maximum path: 4
+Routing for Networks:
+	172.30.0.0
+	209.165.200.0
+Passive Interface(s):
+	FastEthernet0/0
+	FastEthernet0/1
+Routing Information Sources:
+	Gateway         Distance      Last Update
+	209.165.200.229      120      00:00:25
+Distance: (default is 120)
+
+R2: 
+
+Building configuration...
+
+Current configuration : 851 bytes
+!
+version 12.3
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R2
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 10.1.0.1 255.255.0.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ ip address 209.165.200.229 255.255.255.252
+ clock rate 2000000
+!
+interface Serial0/0/1
+ ip address 209.165.200.233 255.255.255.252
+ clock rate 64000
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ passive-interface FastEthernet0/0
+ network 10.0.0.0
+ network 209.165.200.0
+ no auto-summary
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/16 is subnetted, 1 subnets
+C       10.1.0.0 is directly connected, FastEthernet0/0
+     172.30.0.0/16 is variably subnetted, 6 subnets, 2 masks
+R       172.30.1.0/24 [120/1] via 209.165.200.230, 00:00:28, Serial0/0/0
+R       172.30.2.0/24 [120/1] via 209.165.200.230, 00:00:28, Serial0/0/0
+R       172.30.100.0/24 [120/1] via 209.165.200.234, 00:00:20, Serial0/0/1
+R       172.30.110.0/24 [120/1] via 209.165.200.234, 00:00:20, Serial0/0/1
+R       172.30.200.16/28 [120/1] via 209.165.200.234, 00:00:20, Serial0/0/1
+R       172.30.200.32/28 [120/1] via 209.165.200.234, 00:00:20, Serial0/0/1
+     209.165.200.0/30 is subnetted, 2 subnets
+C       209.165.200.228 is directly connected, Serial0/0/0
+C       209.165.200.232 is directly connected, Serial0/0/1
+
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        10.1.0.1        YES manual up                    up 
+FastEthernet0/1        unassigned      YES NVRAM  administratively down down 
+Serial0/0/0            209.165.200.229 YES manual up                    up 
+Serial0/0/1            209.165.200.233 YES manual up                    up 
+Vlan1                  unassigned      YES NVRAM  administratively down down
+
+Routing Protocol is "rip"
+Sending updates every 30 seconds, next due in 14 seconds
+Invalid after 180 seconds, hold down 180, flushed after 240
+Outgoing update filter list for all interfaces is not set
+Incoming update filter list for all interfaces is not set
+Redistributing: rip
+Default version control: send version 2, receive 2
+  Interface             Send  Recv  Triggered RIP  Key-chain
+  Serial0/0/0           22
+  Serial0/0/1           22
+Automatic network summarization is not in effect
+Maximum path: 4
+Routing for Networks:
+	10.0.0.0
+	209.165.200.0
+Passive Interface(s):
+	FastEthernet0/0
+Routing Information Sources:
+	Gateway         Distance      Last Update
+	209.165.200.230      120      00:00:24
+	209.165.200.234      120      00:00:18
+Distance: (default is 120)
+
+R3:
+
+Building configuration...
+
+Current configuration : 1011 bytes
+!
+version 12.3
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+no service password-encryption
+!
+hostname R3
+!
+!
+!
+!
+!
+!
+!
+!
+no ip cef
+no ipv6 cef
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface Loopback0
+ ip address 172.30.110.1 255.255.255.0
+!
+interface Loopback1
+ ip address 172.30.200.17 255.255.255.240
+!
+interface Loopback2
+ ip address 172.30.200.33 255.255.255.240
+!
+interface FastEthernet0/0
+ ip address 172.30.100.1 255.255.255.0
+ duplex auto
+ speed auto
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ no ip address
+ clock rate 2000000
+ shutdown
+!
+interface Serial0/0/1
+ ip address 209.165.200.234 255.255.255.252
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+router rip
+ version 2
+ passive-interface FastEthernet0/0
+ network 172.30.0.0
+ network 209.165.200.0
+ no auto-summary
+!
+ip classless
+!
+ip flow-export version 9
+!
+!
+!
+!
+!
+!
+!
+!
+line con 0
+!
+line aux 0
+!
+line vty 0 4
+ login
+!
+!
+!
+end
+
+R3#show ip route
+Codes: C - connected, S - static, I - IGRP, R - RIP, M - mobile, B - BGP
+       D - EIGRP, EX - EIGRP external, O - OSPF, IA - OSPF inter area
+       N1 - OSPF NSSA external type 1, N2 - OSPF NSSA external type 2
+       E1 - OSPF external type 1, E2 - OSPF external type 2, E - EGP
+       i - IS-IS, L1 - IS-IS level-1, L2 - IS-IS level-2, ia - IS-IS inter area
+       * - candidate default, U - per-user static route, o - ODR
+       P - periodic downloaded static route
+
+Gateway of last resort is not set
+
+     10.0.0.0/16 is subnetted, 1 subnets
+R       10.1.0.0 [120/1] via 209.165.200.233, 00:00:08, Serial0/0/1
+     172.30.0.0/16 is variably subnetted, 6 subnets, 2 masks
+R       172.30.1.0/24 [120/2] via 209.165.200.233, 00:00:08, Serial0/0/1
+R       172.30.2.0/24 [120/2] via 209.165.200.233, 00:00:08, Serial0/0/1
+C       172.30.100.0/24 is directly connected, FastEthernet0/0
+C       172.30.110.0/24 is directly connected, Loopback0
+C       172.30.200.16/28 is directly connected, Loopback1
+C       172.30.200.32/28 is directly connected, Loopback2
+     209.165.200.0/30 is subnetted, 2 subnets
+R       209.165.200.228 [120/1] via 209.165.200.233, 00:00:08, Serial0/0/1
+C       209.165.200.232 is directly connected, Serial0/0/1
+
+Interface              IP-Address      OK? Method Status                Protocol 
+FastEthernet0/0        172.30.100.1    YES manual up                    up 
+FastEthernet0/1        unassigned      YES NVRAM  administratively down down 
+Serial0/0/0            unassigned      YES NVRAM  administratively down down 
+Serial0/0/1            209.165.200.234 YES manual up                    up 
+Loopback0              172.30.110.1    YES manual up                    up 
+Loopback1              172.30.200.17   YES manual up                    up 
+Loopback2              172.30.200.33   YES manual up                    up 
+Vlan1                  unassigned      YES NVRAM  administratively down down\
+
+Routing Protocol is "rip"
+Sending updates every 30 seconds, next due in 7 seconds
+Invalid after 180 seconds, hold down 180, flushed after 240
+Outgoing update filter list for all interfaces is not set
+Incoming update filter list for all interfaces is not set
+Redistributing: rip
+Default version control: send version 2, receive 2
+  Interface             Send  Recv  Triggered RIP  Key-chain
+  Loopback0             22
+  Loopback1             22
+  Loopback2             22
+  Serial0/0/1           22
+Automatic network summarization is not in effect
+Maximum path: 4
+Routing for Networks:
+	172.30.0.0
+	209.165.200.0
+Passive Interface(s):
+	FastEthernet0/0
+Routing Information Sources:
+	Gateway         Distance      Last Update
+	209.165.200.233      120      00:00:15
+Distance: (default is 120)
+
